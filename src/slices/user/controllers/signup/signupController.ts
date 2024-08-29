@@ -59,16 +59,18 @@ export class SignupController extends Controller {
     if (httpRequest?.body?.provider === "google") {
       console.log("provider google", httpRequest?.body?.provider );
       const auth = await this.googleOAuthService.getGoogleOAuthToken(userCreated?._id as string);
-      console.log("auth Controller", auth);
-      const { access_token, refresh_token } = auth.credentials;
-      await this.addAccount({
-        createdById: userCreated?._id as string,
-        name: userCreated?.name as string,
-        refreshToken,
-        active: true,
-        expiresAt: addDays(new Date(), 1) as unknown as string,
-      });
-      return success({ user: userCreated, accessToken: access_token, refreshToken:refresh_token });
+      if(auth) {
+        console.log("auth Controller", auth);
+        const { access_token, refresh_token } = auth.credentials;
+        await this.addAccount({
+          createdById: userCreated?._id as string,
+          name: userCreated?.name as string,
+          refreshToken,
+          active: true,
+          expiresAt: addDays(new Date(), 1) as unknown as string,
+        });
+        return success({ user: userCreated, accessToken: access_token, refreshToken:refresh_token });
+      }
     }
     
     await this.addAccount({

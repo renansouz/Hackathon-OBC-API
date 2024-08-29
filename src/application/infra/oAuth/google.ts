@@ -20,6 +20,10 @@ export class GoogleOAuthService implements GoogleOAuth {
       options: {},
     });
 
+    if (!account) {
+      return null;
+    }
+    
     const auth = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,

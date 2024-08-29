@@ -9,7 +9,7 @@ import { handleGoogleProfile } from "../googleProfileHandler";
 fastifyPassport.use(new GoogleStrategy({
   clientID: env.googleClientId,
   clientSecret: env.googleClientSecret,
-  callbackURL: "https://meetflow.fly.dev/api/auth/google/callback",
+  callbackURL: "https://api.meetflow.tech/api/auth/google/callback",
   passReqToCallback: true,
 },
 async (request: any, accessToken: string, refreshToken: string, params: any ,profile: any, done: any) => {

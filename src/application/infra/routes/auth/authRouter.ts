@@ -20,7 +20,7 @@ const googleAuthOptions = {
   prompt: "consent",
 };
 
-const cookieOptions = { path: "/", maxAge: 7 * 24 * 60 * 60 }; // 7 days
+const cookieOptions = { path: "/", domain: ".meetflow.tech", maxAge: 7 * 24 * 60 * 60 }; // 7 dias
 
 export async function auth(fastify: FastifyInstance) {
   fastify.post("/auth/signup", signupPostSchema, signupAdapter());
@@ -44,7 +44,7 @@ export async function auth(fastify: FastifyInstance) {
       const user = request.user as User;
 
       // Extract the scope parameter from the URL
-      const url = new URL(request.url, "https://meetflow.fly.dev/");
+      const url = new URL(request.url, "https://api.meetflow.tech/");
       const scopes = url.searchParams.get("scope");
 
       const decodedScopes = decodeURIComponent(scopes || "").split(" ");
@@ -58,12 +58,12 @@ export async function auth(fastify: FastifyInstance) {
         reply.setCookie("meetFlow.user", JSON.stringify(user.user), cookieOptions);
       }
       if (user.user.role === "client") {
-        reply.redirect("http://localhost:5173/dashboard/services");
+        reply.redirect("https://www.meetflow.tech/dashboard/services");
       } else if (user.user.role === "professional") {
         if (user.user.myScheduleId) {
-          reply.redirect("http://localhost:5173/professional/dashboard");
+          reply.redirect("https://www.meetflow.tech/professional/dashboard");
         } else {
-          reply.redirect("http://localhost:5173/professional/register/google");
+          reply.redirect("https://www.meetflow.tech/professional/register/google");
         }
       }
     }
